@@ -117,7 +117,7 @@ const handleDeleteProduct = async (req, res) => {
 }
 
 const handleUpdateProduct = async (req, res) => {
-    console.log("data :", req.body)
+
     try {
         let data = await ProductService.handleUpdateProduct(req.body);
         if (data) {

@@ -29,5 +29,5 @@ app.use((req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log("jwt backend is running on the port =  " + PORT);
+    console.log("mbba backend is running on the port =  " + PORT);
 });

@@ -1,6 +1,7 @@
 import db from "../models/index"
 import bcrypt from "bcryptjs";
 import { Op } from "sequelize";
+import { createJWT } from "../middleware/JWTAction"
 const salt = bcrypt.genSaltSync(10);
 const hashUserPassword = (password) => {
     return bcrypt.hashSync(password, salt);
@@ -80,15 +81,29 @@ const handleLoginUser = async (data) => {
         let user = await db.user.findOne({
             where: {
                 [Op.or]: [{ email: data.valueLogin }, { phone: data.valueLogin }],
+            },
+            attributes: {
+                exclude: ['updatedAt']
             }
         })
         if (user) {
             let isCorrectPassword = checkPassword(data.password, user.password)
             if (isCorrectPassword === true) {
+
+                let payload = {
+                    email: user.email,
+                    username: user.username,
+
+                }
+                let token = createJWT(payload)
                 return {
                     EM: 'Đăng nhập thành công!',
                     EC: 0,
-                    DT: []
+                    DT: {
+                        access_token: token,
+                        email: user.email,
+                        username: user.username
+                    }
                 }
             }
             return {
@@ -109,5 +124,8 @@ const handleLoginUser = async (data) => {
 
 module.exports = {
     registerNewUser,
-    handleLoginUser
+    handleLoginUser,
+    checkEmailExist,
+    checkPhoneExist,
+    hashUserPassword
 }
