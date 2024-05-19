@@ -119,14 +119,7 @@ const getUserWithPagination = async (page, limit) => {
 
 const updateUser = async (data) => {
     try {
-        if (!data.groupId) {
-            return {
-                EM: 'Đã có lỗi với GroupId rỗng! ',
-                EC: 1,
-                DT: "group"
-            }
 
-        }
         let user = await db.user.findOne({
             where: {
                 id: data.id,
@@ -141,14 +134,14 @@ const updateUser = async (data) => {
                 groupId: data.groupId
             });
             return {
-                EM: 'Update user succeeds',
+                EM: 'Cập nhật người dùng thành công',
                 EC: 0,
                 DT: ""
             }
         } else {
             //not found
             return {
-                EM: 'User not found! ',
+                EM: 'Không tìm thấy người dùng này! ',
                 EC: 2,
                 DT: ""
             }
@@ -156,7 +149,7 @@ const updateUser = async (data) => {
     } catch (error) {
         console.log("check error :", error);
         return {
-            EM: 'Something wrongs with services ',
+            EM: 'Đã có lỗi xảy ra ở hệ thống! ',
             EC: 1,
             DT: []
         }
