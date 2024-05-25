@@ -9,8 +9,8 @@ const router = express.Router();
 
 const apiRoutes = (app) => {
     // router.all('*', checkUserJWT, checkUserPermission)
-    router.post("/register", LoginRegisterController.registerNewUser);
     router.post('/login', LoginRegisterController.handleLoginUser);
+    router.post("/register", LoginRegisterController.registerNewUser);
     router.post("/logout", LoginRegisterController.handleLogoutUser);
 
     // user 
@@ -36,11 +36,13 @@ const apiRoutes = (app) => {
     // group 
     router.get("/group/read", groupController.readFunc);
 
-
-
     // role 
-    // router.get("/role/read", roleController.readFunc);
+    router.get("/role/read", RoleController.readFunc);
     router.post("/role/create", RoleController.createFunc);
+    router.put("/role/update", RoleController.updateFunc);
+    router.delete("/role/delete", RoleController.deleteFunc);
+    router.get("/role/by-group/:groupId", RoleController.getRoleByGroup);
+    router.post('/role/assign-to-group', RoleController.assignRoleToGroup)
     return app.use("/api/v1", router);
 }
 export default apiRoutes;

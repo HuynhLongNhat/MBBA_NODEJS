@@ -2,6 +2,7 @@ import db from "../models/index"
 import bcrypt from "bcryptjs";
 import { Op } from "sequelize";
 import { createJWT } from "../middleware/JWTAction"
+import { getGroupWithRoles } from "./jwtService"
 const salt = bcrypt.genSaltSync(10);
 const hashUserPassword = (password) => {
     return bcrypt.hashSync(password, salt);
@@ -55,7 +56,8 @@ const registerNewUser = async (data) => {
             email: data.email,
             phone: data.phone,
             username: data.userName,
-            password: hashPassword
+            password: hashPassword,
+            groupId: 3
         })
         return {
             EM: 'Tài khoản đăng kí thành công!',
@@ -89,9 +91,10 @@ const handleLoginUser = async (data) => {
         if (user) {
             let isCorrectPassword = checkPassword(data.password, user.password)
             if (isCorrectPassword === true) {
-
+                let groupWithRoles = await getGroupWithRoles(user);
                 let payload = {
                     email: user.email,
+                    groupWithRoles,
                     username: user.username,
 
                 }
@@ -101,6 +104,7 @@ const handleLoginUser = async (data) => {
                     EC: 0,
                     DT: {
                         access_token: token,
+                        groupWithRoles,
                         email: user.email,
                         username: user.username
                     }

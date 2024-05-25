@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import connection from "./config/connectDB";
 import apiRoutes from "./routes/api"
 import { configCors } from "./config/cors";
+import cookieParser from "cookie-parser";
 const app = express();
 const PORT = process.env.PORT || 8888;
 
@@ -18,6 +19,8 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 
 // api routes 
+
+app.use(cookieParser())
 apiRoutes(app)
 
 

@@ -56,10 +56,12 @@ const handleLoginUser = async (req, res) => {
         }
         // create new user
         let data = await LoginRegisterService.handleLoginUser(req.body);
+
         if (data && data.DT && data.DT.access_token) {
 
             // thuộc tính httpsOnly : true chỉ cho phía server lấy cookie
-            res.cookie('jwt', data.DT.access_token, { httpsOnly: true, maxAge: 60 * 60 * 1000 });
+            res.cookie('token', data.DT.access_token, { httpsOnly: true, maxAge: 60 * 60 * 1000 });
+
         }
 
         if (data) {
@@ -81,7 +83,7 @@ const handleLoginUser = async (req, res) => {
 
 const handleLogoutUser = async (req, res) => {
     try {
-        res.clearCookie("jwt")
+        res.clearCookie("token")
         return res.status(200).json({
             EM: "Xóa cookie thành công!",
             EC: 0,

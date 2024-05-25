@@ -40,13 +40,15 @@ const extractToken = (req) => {
 
 
 const checkUserJWT = (req, res, next) => {
-    if (nonSecurePaths.includes(req.path)) {
-        return next()
-    }
+
+    // if (nonSecurePaths.includes(req.path)) {
+    //     return next()
+    // }
     let cookies = req.cookies;
+
     const tokenFromHeader = extractToken(req);
-    if (cookies && cookies.jwt || tokenFromHeader) {
-        let token = cookies && cookies.jwt ? cookies.jwt : tokenFromHeader;
+    if (cookies && cookies.token || tokenFromHeader) {
+        let token = cookies && cookies.token ? cookies.token : tokenFromHeader;
 
         let decoded = verifyToken(token);
         if (decoded) {
@@ -59,7 +61,7 @@ const checkUserJWT = (req, res, next) => {
             return res.status(401).json({
                 EC: -1,
                 DT: '',
-                EM: 'Not authenticated the user'
+                EM: "Người dùng không xác thực!",
             })
         }
     }
@@ -68,23 +70,24 @@ const checkUserJWT = (req, res, next) => {
         return res.status(401).json({
             EC: -1,
             DT: '',
-            EM: 'Not authenticated the user'
+            EM: "Người dùng không xác thực!",
         })
     }
 
 }
 
 const checkUserPermission = (req, res, next) => {
-    if (nonSecurePaths.includes(req.path) || req.path === '/account') {
-        return next()
-    }
+
+    // if (nonSecurePaths.includes(req.path)) {
+    //     return next()
+    // }
     if (req.user) {
         let email = req.user.email;
-        let roles = req.user.groupWithRoles.Roles;
+        let roles = req.user.groupWithRoles.roles;
         let currentUrl = req.path;
         if (!roles || roles.length === 0) {
             return res.status(403).json({
-                EM: `You don't permission to access this resource...`,
+                EM: `Bạn không có quyền được truy cập vào trang này!...`,
                 EC: "-1",
                 DT: "",
             });
@@ -95,14 +98,14 @@ const checkUserPermission = (req, res, next) => {
         }
         else {
             return res.status(403).json({
-                EM: `You don't permission to access this resource...`,
+                EM: `Bạn không có quyền được truy cập vào trang này!...`,
                 EC: "-1",
                 DT: "",
             });
         }
     } else {
         return res.status(401).json({
-            EM: "Not authenticated the user",
+            EM: "Người dùng không xác thực!",
             EC: "-1",
             DT: "",
         });
