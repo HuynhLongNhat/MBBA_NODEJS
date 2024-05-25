@@ -41,9 +41,9 @@ const extractToken = (req) => {
 
 const checkUserJWT = (req, res, next) => {
 
-    // if (nonSecurePaths.includes(req.path)) {
-    //     return next()
-    // }
+    if (nonSecurePaths.includes(req.path)) {
+        return next()
+    }
     let cookies = req.cookies;
 
     const tokenFromHeader = extractToken(req);
@@ -78,9 +78,9 @@ const checkUserJWT = (req, res, next) => {
 
 const checkUserPermission = (req, res, next) => {
 
-    // if (nonSecurePaths.includes(req.path)) {
-    //     return next()
-    // }
+    if (nonSecurePaths.includes(req.path)) {
+        return next()
+    }
     if (req.user) {
         let email = req.user.email;
         let roles = req.user.groupWithRoles.roles;
