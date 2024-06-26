@@ -55,7 +55,6 @@ const registerNewUser = async (data) => {
             name: data.name,
             email: data.email,
             phone: data.phone,
-            username: data.userName,
             password: hashPassword,
             groupId: 3
         })
@@ -66,6 +65,7 @@ const registerNewUser = async (data) => {
 
         }
     } catch (error) {
+        console.log(error)
         return {
             EM: 'Đã có lỗi xảy ra ở hệ thống!',
             EC: -2,
@@ -95,7 +95,7 @@ const handleLoginUser = async (data) => {
                 let payload = {
                     email: user.email,
                     groupWithRoles,
-                    username: user.username,
+                    name: user.name,
 
                 }
                 let token = createJWT(payload)
@@ -106,7 +106,7 @@ const handleLoginUser = async (data) => {
                         access_token: token,
                         groupWithRoles,
                         email: user.email,
-                        username: user.username
+                        name: user.name
                     }
                 }
             }

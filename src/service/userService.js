@@ -60,7 +60,7 @@ const createNewUser = async (data) => {
 
         let user = await db.user.create({
             name: data.name,
-            username: data.username,
+
             password: hashPassword,
             phone: data.phone,
             email: data.email,
@@ -91,7 +91,7 @@ const getUserWithPagination = async (page, limit) => {
         const { count, rows } = await db.user.findAndCountAll({
             offSet: offSet,
             limit: limit,
-            attributes: ["id", "username", "email", "phone", "gender", "address"],
+            attributes: ["id", "email", "phone", "gender", "address"],
             include: { model: db.Group, attributes: ["name", "description", "id"] },
             order: [["id", "DESC"]],
         });

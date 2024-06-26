@@ -4,25 +4,6 @@ import LoginRegisterService from "../service/LoginRegisterService";
 const registerNewUser = async (req, res) => {
 
     try {
-        if (
-            !req.body.email ||
-            !req.body.userName ||
-            !req.body.phone ||
-            !req.body.password
-        ) {
-            return res.status(200).json({
-                EM: "Thiếu các trường bắt buộc!",
-                EC: "1",
-                DT: "",
-            })
-        }
-        if (req.body.password && req.body.password.length < 6) {
-            return res.status(200).json({
-                EM: "Mật khẩu của bạn phải lớn hơn hoặc bằng 6 kí tự",
-                EC: "1",
-                DT: "",
-            });
-        }
         // create new user
         let data = await LoginRegisterService.registerNewUser(req.body);
         if (data) {
